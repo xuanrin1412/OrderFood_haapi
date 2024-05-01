@@ -9,12 +9,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
 import { setBlur, setFocus, togglePassword } from "../features/FormAuth/formAuthSlice";
 import { useState } from "react";
+import { FiCode } from "react-icons/fi";
 // import { FiUser } from "react-icons/fi";
 import { toast } from 'react-toastify';
-import { IoCode } from "react-icons/io5";
 // import Cookies from 'js-cookie';
 import axios from "../api/axios";
 import { HiOutlineMail } from "react-icons/hi";
+import PasswordStrengthBar from "react-password-strength-bar";
 
 
 export default function ChangePassword() {
@@ -29,16 +30,21 @@ export default function ChangePassword() {
         dispatch(togglePassword())
     };
     const [email, setEmail] = useState<string>("")
+    const [token, setToken] = useState<string>("")
     const [password, setPassword] = useState<string>("")
-    const [code, setCode] = useState<string>("")
+    const [password_confirmation, setPassword_confirmation] = useState<string>("")
+    const [checkPassword, setCheckPassword] = useState<boolean>(false)
+
 
     const handleSubmit = async (e: { preventDefault: () => void }) => {
         e.preventDefault()
-        console.log(email, password, code);
-        await axios.put("/api/change-password", {
+        console.log(email, password, token);
+        await axios.post("/api/reset-password", {
             email,
+            token,
             password,
-            code
+            password_confirmation
+
         })
             .then((res) => {
                 console.log("res change pass", res);
@@ -78,7 +84,17 @@ export default function ChangePassword() {
                             <HiOutlineMail style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
                             <input value={email} onChange={e => setEmail(e.target.value)} type="email" required placeholder="Email" className="stylePlaceholder flex-1 mr-[2.688rem] outline-none text-base leading-nomalText font-medium tracking-nomalText  text-textInput dark:text-white bg-white dark:bg-[#292C38] " />
                         </span>
-                        <span onFocus={() => handleInputFocus('password')}
+                        <span onFocus={() => handleInputFocus("token")}
+                            onBlur={() => dispatch(setBlur())}
+                            className={`${focusedInput === 'token' ? ' border-third' : 'border-borderColor dark:border-[#565C70]'} h-58 flex items-center pt-[1.188rem] pb-[1.125rem] rounded-xl border  `}>
+                            <FiCode style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
+                            <input value={token} onChange={e => setToken(e.target.value)} type="token" required placeholder="Token" className="stylePlaceholder flex-1 mr-[2.688rem] outline-none text-base leading-nomalText font-medium tracking-nomalText  text-textInput dark:text-white bg-white dark:bg-[#292C38] " />
+                        </span>
+                        <span onFocus={() => {
+                            handleInputFocus("password")
+                            setCheckPassword(true)
+                        }
+                        }
                             onBlur={() => dispatch(setBlur())}
                             className={`${focusedInput === 'password' ? ' border-third' : 'border-borderColor dark:border-[#565C70]'} h-58 flex items-center pt-[1.188rem] pb-[1.125rem] rounded-xl border  `}>
                             <LuLock style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
@@ -86,13 +102,19 @@ export default function ChangePassword() {
                             {showPassword ? <LuEye onClick={handleTogglePassword} style={{ height: 24, width: 24, color: "#96A0B5", margin: " 0 16px" }} /> :
                                 <LuEyeOff onClick={handleTogglePassword} style={{ height: 24, width: 24, color: "#96A0B5", margin: " 0 16px" }} />}
                         </span>
-                        <span onFocus={() => handleInputFocus("code")}
-                            onBlur={() => dispatch(setBlur())}
-                            className={`${focusedInput === 'code' ? ' border-third' : 'border-borderColor dark:border-[#565C70]'} h-58 flex items-center pt-[1.188rem] pb-[1.125rem] rounded-xl border  `}>
-                            <IoCode style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
-                            <input value={code} onChange={e => setCode(e.target.value)} type="text" required placeholder="Code" className="stylePlaceholder flex-1 mr-[2.688rem] outline-none text-base leading-nomalText font-medium tracking-nomalText  text-textInput dark:text-white bg-white dark:bg-[#292C38] " />
-                        </span>
+                        {checkPassword && <PasswordStrengthBar scoreWords={['weak', 'weak', 'standar', 'good', 'strong']} className="custom-passwordStrength" password={password} />}
 
+                        <span onFocus={() => {
+                            handleInputFocus("password_confirmation")
+                            setCheckPassword(true)
+                        }
+                        }
+                            onBlur={() => dispatch(setBlur())}
+                            className={`${focusedInput === 'password_confirmation' ? ' border-third' : 'border-borderColor dark:border-[#565C70]'} h-58 flex items-center pt-[1.188rem] pb-[1.125rem] rounded-xl border  `}>
+                            <LuLock style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
+                            <input value={password_confirmation} onChange={e => setPassword_confirmation(e.target.value)} type="text" required placeholder="Password confirmation" className="password stylePlaceholder flex-1 outline-none text-base leading-nomalText font-medium tracking-nomalText  text-textInput dark:text-white bg-white dark:bg-[#292C38]" />
+
+                        </span>
                     </div>
                     <div className="flex items-center justify-between custom-checkbox">
                         <label className="main text-textsecondary dark:text-textMain font-medium text-base leading-nomalText">Remember Me

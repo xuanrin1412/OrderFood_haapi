@@ -5,10 +5,6 @@ import { HiOutlineMail } from "react-icons/hi";
 import { LuEye, LuLock } from "react-icons/lu";
 import { LuEyeOff } from "react-icons/lu";
 import { FcGoogle } from "react-icons/fc";
-import { MdDriveFileRenameOutline } from "react-icons/md";
-import { MdOutlineTransgender } from "react-icons/md";
-import { FaBirthdayCake } from "react-icons/fa";
-import { FaLocationDot } from "react-icons/fa6";
 import SideTheme from "../components/SideTheme";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,10 +31,7 @@ export default function Register() {
     const [email, setEmail] = useState<string>("")
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
-    const [fullName, setFullName] = useState<string>("")
-    const [address, setAddress] = useState<string>("")
-    const [gender, setGender] = useState<string>("")
-    const [dob, setDob] = useState<string>("")
+    const [password_confirmation, setPassword_confirmation] = useState<string>("")
 
     const [checkPassword, setCheckPassword] = useState<boolean>(false)
     // const score = document.querySelector('.custom-passwordStrength > p');
@@ -61,10 +54,7 @@ export default function Register() {
                 username,
                 email,
                 password,
-                fullName,
-                address,
-                gender,
-                dob
+                password_confirmation
             },)
                 .then((res) => {
                     console.log(res);
@@ -115,30 +105,6 @@ export default function Register() {
                             <HiOutlineMail style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
                             <input value={email} onChange={e => setEmail(e.target.value)} type="email" required placeholder="Email" className="stylePlaceholder flex-1 mr-[2.688rem] outline-none text-base leading-nomalText font-medium tracking-nomalText text-textInput dark:text-white bg-white dark:bg-[#292C38]  " />
                         </span>
-                        <span onFocus={() => { handleInputFocus("fullname") }}
-                            onBlur={() => dispatch(setBlur())}
-                            className={`${focusedInput === 'fullname' ? ' border-third' : 'border-borderColor dark:border-[#565C70]'} h-58 flex items-center pt-[1.188rem] pb-[1.125rem] rounded-xl border  `}>
-                            <MdDriveFileRenameOutline style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
-                            <input value={fullName} onChange={e => setFullName(e.target.value)} type="text" required placeholder="Fullname" className="stylePlaceholder flex-1 mr-[2.688rem] outline-none text-base leading-nomalText font-medium tracking-nomalText text-textInput dark:text-white bg-white dark:bg-[#292C38]  " />
-                        </span>
-                        <span onFocus={() => { handleInputFocus("address") }}
-                            onBlur={() => dispatch(setBlur())}
-                            className={`${focusedInput === 'address' ? ' border-third' : 'border-borderColor dark:border-[#565C70]'} h-58 flex items-center pt-[1.188rem] pb-[1.125rem] rounded-xl border  `}>
-                            <FaLocationDot style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
-                            <input value={address} onChange={e => setAddress(e.target.value)} type="text" placeholder="Address" className="stylePlaceholder flex-1 mr-[2.688rem] outline-none text-base leading-nomalText font-medium tracking-nomalText text-textInput dark:text-white bg-white dark:bg-[#292C38]  " />
-                        </span>
-                        <span onFocus={() => { handleInputFocus("gender") }}
-                            onBlur={() => dispatch(setBlur())}
-                            className={`${focusedInput === 'gender' ? ' border-third' : 'border-borderColor dark:border-[#565C70]'} h-58 flex items-center pt-[1.188rem] pb-[1.125rem] rounded-xl border  `}>
-                            <MdOutlineTransgender style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
-                            <input value={gender} onChange={e => setGender(e.target.value)} type="text" placeholder="Gender" className="stylePlaceholder flex-1 mr-[2.688rem] outline-none text-base leading-nomalText font-medium tracking-nomalText text-textInput dark:text-white bg-white dark:bg-[#292C38]  " />
-                        </span>
-                        <span onFocus={() => { handleInputFocus("date") }}
-                            onBlur={() => dispatch(setBlur())}
-                            className={`${focusedInput === 'date' ? ' border-third' : 'border-borderColor dark:border-[#565C70]'} h-58 flex items-center pt-[1.188rem] pb-[1.125rem] rounded-xl border  `}>
-                            <FaBirthdayCake style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
-                            <input value={dob} onChange={e => setDob(e.target.value)} type="date" placeholder="Date of birth" className="stylePlaceholder styleDob flex-1 mr-[2.688rem] outline-none text-base leading-nomalText font-medium tracking-nomalText text-textInput dark:text-white bg-white dark:bg-[#292C38]  " />
-                        </span>
                         <span onFocus={() => {
                             handleInputFocus("password")
                             setCheckPassword(true)
@@ -152,6 +118,19 @@ export default function Register() {
                                 <LuEyeOff onClick={handleTogglePassword} style={{ height: 24, width: 24, color: "#96A0B5", margin: " 0 16px" }} />}
                         </span>
                         {checkPassword && <PasswordStrengthBar scoreWords={['weak', 'weak', 'standar', 'good', 'strong']} className="custom-passwordStrength" password={password} />}
+
+                        <span onFocus={() => {
+                            handleInputFocus("password_confirmation")
+                            setCheckPassword(true)
+                        }
+                        }
+                            onBlur={() => dispatch(setBlur())}
+                            className={`${focusedInput === 'password_confirmation' ? ' border-third' : 'border-borderColor dark:border-[#565C70]'} h-58 flex items-center pt-[1.188rem] pb-[1.125rem] rounded-xl border  `}>
+                            <LuLock style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
+                            <input value={password_confirmation} onChange={e => setPassword_confirmation(e.target.value)} type="text" required placeholder="Password confirmation" className="password stylePlaceholder flex-1 outline-none text-base leading-nomalText font-medium tracking-nomalText  text-textInput dark:text-white bg-white dark:bg-[#292C38]" />
+
+                        </span>
+                        {/* {samePassword && <div className="text-red-500">Password is not the same</div>} */}
                     </div>
                     <label className="main text-textsecondary dark:text-textMain font-medium text-base leading-nomalText">I agree to the Terms & Conditions
                         <input type="checkbox" checked={checked} onChange={handleCheckboxChange} />

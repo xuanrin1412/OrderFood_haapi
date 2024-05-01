@@ -25,8 +25,8 @@ export default function Content() {
                     Authorization: `Bearer ${refreshTokenFood}`,
                 },
             });
-            Cookies.set("accessTokenFood", res.data.accessToken);
-            Cookies.set("refreshTokenFood", res.data.refreshToken);
+            Cookies.set("accessTokenFood", res.data.access_token);
+            Cookies.set("refreshTokenFood", res.data.refresh_token);
             fetchData();
         } catch (error) {
             toast("Please login again!")
@@ -43,7 +43,7 @@ export default function Content() {
                     Authorization: `Bearer ${accessTokenFood}`,
                 },
             });
-            setData(res.data);
+            setData(res.data.data);
         } catch (error: any) {
             if (error.response && error.response.data.statusCode === 401 && refreshTokenFood) {
                 await refreshAccessToken();

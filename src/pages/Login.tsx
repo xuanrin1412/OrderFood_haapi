@@ -10,11 +10,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
 import { setBlur, setFocus, togglePassword } from "../features/FormAuth/formAuthSlice";
 import { useState } from "react";
-import { FiUser } from "react-icons/fi";
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 import axios from "../api/axios";
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
+import { HiOutlineMail } from "react-icons/hi";
 
 export default function Login() {
     const navigate = useNavigate()
@@ -27,22 +27,25 @@ export default function Login() {
     const handleTogglePassword = () => {
         dispatch(togglePassword())
     };
-    const [username, setUsername] = useState<string>("")
+    const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault()
         axios.post("/api/login", {
-            username,
+            email,
             password
         })
             .then((res) => {
-                Cookies.set("accessTokenFood", res.data.accessToken
+                console.log(res);
 
-                );
-                const decoded = jwtDecode(res.data.accessToken);
-                console.log("decoded", decoded);
+                Cookies.set("accessTokenFood", res.data.access_token)
+                Cookies.set("refreshTokenFood", res.data.refresh_token);
 
-                Cookies.set("refreshTokenFood", res.data.refreshToken);
+                // );
+                // const decoded = jwtDecode(res.data.access_token);
+                // console.log("decoded", decoded);
+
+
                 toast("Login Successful")
                 return navigate("/")
             })
@@ -75,11 +78,11 @@ export default function Login() {
                         <div className="text-sm font-medium text-textsecondary dark:text-textMain">Log In to your account</div>
                     </div>
                     <div className="flex flex-col gap-4">
-                        <span onFocus={() => handleInputFocus("username")}
+                        <span onFocus={() => handleInputFocus("email")}
                             onBlur={() => dispatch(setBlur())}
-                            className={`${focusedInput === 'username' ? ' border-third' : 'border-borderColor dark:border-[#565C70]'} h-58 flex items-center pt-[1.188rem] pb-[1.125rem] rounded-xl border  `}>
-                            <FiUser style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
-                            <input value={username} onChange={e => setUsername(e.target.value)} type="username" required placeholder="Username" className="stylePlaceholder flex-1 mr-[2.688rem] outline-none text-base leading-nomalText font-medium tracking-nomalText  text-textInput dark:text-white bg-white dark:bg-[#292C38] " />
+                            className={`${focusedInput === 'email' ? ' border-third' : 'border-borderColor dark:border-[#565C70]'} h-58 flex items-center pt-[1.188rem] pb-[1.125rem] rounded-xl border  `}>
+                            <HiOutlineMail style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
+                            <input value={email} onChange={e => setEmail(e.target.value)} type="email" required placeholder="Email" className="stylePlaceholder flex-1 mr-[2.688rem] outline-none text-base leading-nomalText font-medium tracking-nomalText  text-textInput dark:text-white bg-white dark:bg-[#292C38] " />
                         </span>
                         <span onFocus={() => handleInputFocus('password')}
                             onBlur={() => dispatch(setBlur())}
