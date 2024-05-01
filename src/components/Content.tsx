@@ -16,17 +16,16 @@ interface UserData {
 }
 export default function Content() {
     const [data, setData] = useState<UserData | undefined>()
-    const accessTokenFood = Cookies.get("accessTokenFood");
-    const refreshTokenFood = Cookies.get("refreshTokenFood");
+    const accessTokenFood = Cookies.get("access_TokenFood");
+    const refreshTokenFood = Cookies.get("refresh_TokenFood");
     const refreshAccessToken = async () => {
         try {
-            const res = await axios.get("/api/refresh-token", {
+            const res = await axios.post("/api/refresh-token", {
                 headers: {
                     Authorization: `Bearer ${refreshTokenFood}`,
                 },
             });
-            Cookies.set("accessTokenFood", res.data.access_token);
-            Cookies.set("refreshTokenFood", res.data.refresh_token);
+            Cookies.set("access_TokenFood", res.data.access_token);
             fetchData();
         } catch (error) {
             toast("Please login again!")
@@ -64,8 +63,8 @@ export default function Content() {
                     Authorization: `Bearer ${accessTokenFood}`,
                 },
             });
-            Cookies.remove('accessTokenFood')
-            Cookies.remove('refreshTokenFood')
+            Cookies.remove('access_TokenFood')
+            Cookies.remove('refresh_TokenFood')
             setData(undefined)
 
         } catch (error) {

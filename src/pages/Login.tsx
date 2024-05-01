@@ -38,8 +38,8 @@ export default function Login() {
             .then((res) => {
                 console.log(res);
 
-                Cookies.set("accessTokenFood", res.data.access_token)
-                Cookies.set("refreshTokenFood", res.data.refresh_token);
+                Cookies.set("access_TokenFood", res.data.access_token)
+                Cookies.set("refresh_TokenFood", res.data.refresh_token);
 
                 // );
                 // const decoded = jwtDecode(res.data.access_token);
