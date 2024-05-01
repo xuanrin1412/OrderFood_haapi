@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.rectangle{
+    background-color:#347AE2;
+   height: 40px;
+   width: 14px;
+ 
+}
+.leftCircle {
+    background-color:#347AE2;
+    height: 40px;
+    width: 20px;
+    border-bottom-left-radius: 80px;
+    border-top-left-radius: 80px;
+}
+.stylePlaceholder::placeholder {
+    color: "#96A0B5";
+
+}
+
+.divider {
+    position: relative; /* Đặt vị trí tương đối để phần tử con có thể được định vị tương đối đến phần tử cha */
+    display: flex;
+    align-items: center;
+}
+
+.divider::before, .divider::after {
+    flex: 1;
+    content: '';
+    padding: 0.5px;
+    background-color: #ECEFF4; /* Màu cho chế độ sáng */
+    margin: 5px;
+}
+
+.dark .divider::before, .dark .divider::after {
+    background-color: #565C70; /* Màu cho chế độ tối */
+}
+
+.divider-content {
+    position: relative; /* Đặt vị trí tương đối để xác định vị trí của văn bản */
+    z-index: 1; /* Đặt z-index cao hơn so với các pseudo-element để hiển thị phía trên chúng */
+  /* Tùy chỉnh màu nền của văn bản nếu cần */
+ /* Thêm khoảng trắng xung quanh văn bản nếu cần */
+}
+
+.shadowChar{
+    box-shadow: -20px 30px 75px 0px rgba(71, 79, 100, 0.07);
+}
+
+.shadowEllipse{
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
+}
+
+.main {
+    display: block;
+    position: relative;
+    padding-left: 32px;
+    /* margin-bottom: 15px; */
+    cursor: pointer;
+}
+
+.main input[type=checkbox] {
+    visibility: hidden;
+}
+
+.checkbox-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    border: 1px solid #ECEFF4;
+    border-radius: 4px;
+    /* background-color: white; */
+}
+
+/* Checked effect */
+.main input:checked~.checkbox-container {
+    background-color: #347AE2;
+}
+
+/* Checkmark */
+.checkbox-container::after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 7px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    border-color: white !important;
+}
+
+/* Display checkmark when checked */
+.main input:checked~.checkbox-container::after {
+    display: block;
+}
+.custom-passwordStrength {
+    display: flex;
+}
+.custom-passwordStrength > div {
+    flex: 1 ;
+    gap: 3px;
+}
+.custom-passwordStrength > p{
+    width: 5.78rem;
+    margin-left: 20px !important;
+}
+
+.styleDob::placeholder {
+    color: "#96A0B5";
+}
