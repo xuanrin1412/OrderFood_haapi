@@ -37,23 +37,17 @@ export default function Login() {
         })
             .then((res) => {
                 console.log(res);
-
-                Cookies.set("access_TokenFood", res.data.access_token)
-                Cookies.set("refresh_TokenFood", res.data.refresh_token);
-
+                Cookies.set("access_token", res.data.access_token)
+                Cookies.set("refresh_token", res.data.refresh_token);
                 // );
                 // const decoded = jwtDecode(res.data.access_token);
                 // console.log("decoded", decoded);
-
-
                 toast("Login Successful")
                 return navigate("/")
             })
             .catch(err => {
-                // console.log(err.response.data.message);
-                toast.error(<p className=" capitalize">{err.response.data.message}</p>)
-
-
+                console.log(err.response.data.error);
+                toast.error(<p className=" capitalize">{err.response.data.error}</p>)
             })
     }
     return <div className="max-h-[1024px] flex ">

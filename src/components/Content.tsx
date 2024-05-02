@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "../api/axios";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -16,27 +16,30 @@ interface UserData {
 }
 export default function Content() {
     const [data, setData] = useState<UserData | undefined>()
-    const accessTokenFood = Cookies.get("access_TokenFood");
-    const refreshTokenFood = Cookies.get("refresh_TokenFood");
+    const accessTokenFood = Cookies.get("access_token");
+    const refreshTokenFood = Cookies.get("refresh_token");
     const refreshAccessToken = async () => {
         try {
-            const res = await axios.post("/api/refresh-token", {
+            console.log(refreshTokenFood, 1);
+            const res = await axios.post("/api/refresh-token", {}, {
                 headers: {
                     Authorization: `Bearer ${refreshTokenFood}`,
                 },
             });
-            Cookies.set("access_TokenFood", res.data.access_token);
+            // console.log("res", res);
+
+            await Cookies.set("access_token", res.data.access_token);
+            await Cookies.set("refresh_token", res.data.refresh_token);
             fetchData();
         } catch (error) {
             toast("Please login again!")
-            console.log("Error refreshing access token:", error);
+            // console.log("Error refreshing access token:", error);
         }
     };
+
     const fetchData = async () => {
+        console.log(refreshTokenFood, 2);
         try {
-            if (!accessTokenFood) {
-                return;
-            }
             const res = await axios.get("/api/profile", {
                 headers: {
                     Authorization: `Bearer ${accessTokenFood}`,
@@ -44,17 +47,28 @@ export default function Content() {
             });
             setData(res.data.data);
         } catch (error: any) {
-            if (error.response && error.response.data.statusCode === 401 && refreshTokenFood) {
+            // console.log(error.response)
+            if (error.response && error.response.status === 401) {
                 await refreshAccessToken();
             } else {
                 console.log("err fetchData not 401", error.response.data);
             }
         }
     };
-    const memoizedFetchData = useCallback(fetchData, [accessTokenFood]);
     useEffect(() => {
-        memoizedFetchData();
-    }, [memoizedFetchData, accessTokenFood]);
+        if (accessTokenFood) {
+            try {
+                // console.log(" accessTokenFood");
+                fetchData()
+            } catch (error) {
+                console.log("error useEffect ", error);
+            }
+        } else {
+            refreshAccessToken()
+            console.log("not login");
+
+        }
+    }, [accessTokenFood]);
 
     const handleLogout = async () => {
         try {
@@ -63,15 +77,13 @@ export default function Content() {
                     Authorization: `Bearer ${accessTokenFood}`,
                 },
             });
-            Cookies.remove('access_TokenFood')
-            Cookies.remove('refresh_TokenFood')
+            Cookies.remove('access_token')
+            Cookies.remove('refresh_token')
             setData(undefined)
-
         } catch (error) {
             toast("Logout error !")
-            console.log("err handleLogout", error);
+            // console.log("err handleLogout", error);
         }
-
     };
 
 
