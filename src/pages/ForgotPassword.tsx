@@ -14,8 +14,6 @@ export default function ForgotPassword() {
     const [email, setEmail] = useState<string>("")
     const [sentEmail, setSentEmail] = useState<boolean>(false)
     const navigate = useNavigate()
-    //avoid eslintrc
-    // console.log(setSentEmail(true));
 
     const dispatch = useDispatch()
     const focusedInput: string = useSelector((state: RootState) => state.forms.focusedInput);
@@ -30,19 +28,11 @@ export default function ForgotPassword() {
             .then((res) => {
                 toast("Checking your email !!")
                 navigate("/change-password")
-                console.log("forgot passs");
-                console.log(res);
                 setSentEmail(true)
             })
             .catch(err => {
-                console.log("err password");
-                console.log(err);
                 toast.error(<p className=" capitalize">{err.response.data.message}</p>)
-
-
             })
-
-        console.log(email);
     }
     return <div className="max-h-[1024px] flex ">
         <div className="flex-1 relative bg-white dark:bg-[#292C38]">

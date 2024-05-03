@@ -36,12 +36,9 @@ export default function Login() {
             password
         })
             .then((res) => {
-                console.log(res);
                 Cookies.set("access_token", res.data.access_token)
                 Cookies.set("refresh_token", res.data.refresh_token);
-                // );
-                // const decoded = jwtDecode(res.data.access_token);
-                // console.log("decoded", decoded);
+
                 toast("Login Successful")
                 return navigate("/")
             })

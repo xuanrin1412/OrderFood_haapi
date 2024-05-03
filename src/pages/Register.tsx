@@ -57,11 +57,9 @@ export default function Register() {
                 password_confirmation
             },)
                 .then((res) => {
-                    console.log(res);
                     return navigate("/login")
                 })
                 .catch(err => {
-                    console.log(err);
                     console.log("err", err.response.data.message);
                     toast.error(<p className=" capitalize">{err.response.data.message}</p>)
                 })

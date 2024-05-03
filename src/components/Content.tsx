@@ -15,30 +15,38 @@ interface UserData {
     role: string
 }
 export default function Content() {
-    const [data, setData] = useState<UserData | undefined>()
-    const accessTokenFood = Cookies.get("access_token");
-    const refreshTokenFood = Cookies.get("refresh_token");
-    const refreshAccessToken = async () => {
-        try {
-            console.log(refreshTokenFood, 1);
-            const res = await axios.post("/api/refresh-token", {}, {
-                headers: {
-                    Authorization: `Bearer ${refreshTokenFood}`,
-                },
-            });
-            // console.log("res", res);
+    const [data, setData] = useState<UserData | undefined>();
+    const [accessTokenFood, setAccessTokenFood] = useState<string | undefined>(
+        Cookies.get("access_token")
+    );
+    const [refreshTokenFood, setRefreshTokenFood] = useState<string | undefined>(
+        Cookies.get("refresh_token")
+    );
 
-            await Cookies.set("access_token", res.data.access_token);
-            await Cookies.set("refresh_token", res.data.refresh_token);
-            fetchData();
+
+    const refreshAccessToken = async () => {
+
+        try {
+            const res = await axios.post(
+                "/api/refresh-token",
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${refreshTokenFood}`,
+                    },
+                }
+            );
+            Cookies.set("access_token", res.data.access_token);
+            setAccessTokenFood(res.data.access_token);
+            Cookies.set("refresh_token", res.data.refresh_token);
+            // fetchData()
         } catch (error) {
-            toast("Please login again!")
-            // console.log("Error refreshing access token:", error);
+            toast("Please login again !");
+            console.log("Error refreshing access token:", error);
         }
     };
 
     const fetchData = async () => {
-        console.log(refreshTokenFood, 2);
         try {
             const res = await axios.get("/api/profile", {
                 headers: {
@@ -47,26 +55,27 @@ export default function Content() {
             });
             setData(res.data.data);
         } catch (error: any) {
-            // console.log(error.response)
-            if (error.response && error.response.status === 401) {
-                await refreshAccessToken();
+            if (refreshTokenFood && error.response && error.response.status === 401) {
+                refreshAccessToken();
             } else {
-                console.log("err fetchData not 401", error.response.data);
+                console.log("Error fetching data:", error);
             }
         }
     };
-    useEffect(() => {
-        if (accessTokenFood) {
-            try {
-                // console.log(" accessTokenFood");
-                fetchData()
-            } catch (error) {
-                console.log("error useEffect ", error);
-            }
-        } else {
-            refreshAccessToken()
-            console.log("not login");
 
+    useEffect(() => {
+        const fetchDataWithRetry = async () => {
+            try {
+                await fetchData();
+            } catch (error) {
+                console.log("Error in useEffect:", error);
+            }
+        };
+
+        if (accessTokenFood) {
+            fetchDataWithRetry();
+        } else {
+            console.log("Not logged in");
         }
     }, [accessTokenFood]);
 
@@ -82,7 +91,6 @@ export default function Content() {
             setData(undefined)
         } catch (error) {
             toast("Logout error !")
-            // console.log("err handleLogout", error);
         }
     };
 

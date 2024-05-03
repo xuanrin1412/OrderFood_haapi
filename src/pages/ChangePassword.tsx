@@ -4,17 +4,13 @@ import { LuLock } from "react-icons/lu";
 import { LuEyeOff } from "react-icons/lu";
 import { LuEye } from "react-icons/lu";
 import SideTheme from "../components/SideTheme";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
 import { setBlur, setFocus, togglePassword } from "../features/FormAuth/formAuthSlice";
-import { useState } from "react";
-import { FiCode } from "react-icons/fi";
-// import { FiUser } from "react-icons/fi";
+import { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
-// import Cookies from 'js-cookie';
 import axios from "../api/axios";
-import { HiOutlineMail } from "react-icons/hi";
 import PasswordStrengthBar from "react-password-strength-bar";
 
 
@@ -29,25 +25,36 @@ export default function ChangePassword() {
     const handleTogglePassword = () => {
         dispatch(togglePassword())
     };
-    const [email, setEmail] = useState<string>("")
-    const [token, setToken] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [password_confirmation, setPassword_confirmation] = useState<string>("")
     const [checkPassword, setCheckPassword] = useState<boolean>(false)
 
 
+    const location = useLocation();
+    const [token, setToken] = useState('');
+
+    const [email, setEmail] = useState('');
+
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const token = searchParams.get('token');
+        const email = searchParams.get('email');
+        setToken(token || '');
+        setEmail(email || '');
+    }, [location.search]);
+
+
+
     const handleSubmit = async (e: { preventDefault: () => void }) => {
         e.preventDefault()
-        console.log(email, password, token);
         await axios.post("/api/reset-password", {
             email,
             token,
             password,
             password_confirmation
-
         })
             .then((res) => {
-                console.log("res change pass", res);
                 toast("Login Successful")
                 return navigate("/")
             })
@@ -78,7 +85,7 @@ export default function ChangePassword() {
                         {/* <div className="text-sm font-medium text-textsecondary dark:text-textMain">Log In to your account</div> */}
                     </div>
                     <div className="flex flex-col gap-4">
-                        <span onFocus={() => handleInputFocus("email")}
+                        {/* <span onFocus={() => handleInputFocus("email")}
                             onBlur={() => dispatch(setBlur())}
                             className={`${focusedInput === 'email' ? ' border-third' : 'border-borderColor dark:border-[#565C70]'} h-58 flex items-center pt-[1.188rem] pb-[1.125rem] rounded-xl border  `}>
                             <HiOutlineMail style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
@@ -89,7 +96,7 @@ export default function ChangePassword() {
                             className={`${focusedInput === 'token' ? ' border-third' : 'border-borderColor dark:border-[#565C70]'} h-58 flex items-center pt-[1.188rem] pb-[1.125rem] rounded-xl border  `}>
                             <FiCode style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
                             <input value={token} onChange={e => setToken(e.target.value)} type="token" required placeholder="Token" className="stylePlaceholder flex-1 mr-[2.688rem] outline-none text-base leading-nomalText font-medium tracking-nomalText  text-textInput dark:text-white bg-white dark:bg-[#292C38] " />
-                        </span>
+                        </span> */}
                         <span onFocus={() => {
                             handleInputFocus("password")
                             setCheckPassword(true)
