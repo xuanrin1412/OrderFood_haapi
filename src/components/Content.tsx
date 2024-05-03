@@ -39,8 +39,10 @@ export default function Content() {
                 }
             );
             Cookies.set("access_token", res.data.access_token);
-            setAccessTokenFood(res.data.access_token);
             Cookies.set("refresh_token", res.data.refresh_token);
+            setAccessTokenFood(res.data.access_token);
+            setRefreshTokenFood(res.data.access_token);
+
             // fetchData()
         } catch (error) {
             toast("Please login again !");
