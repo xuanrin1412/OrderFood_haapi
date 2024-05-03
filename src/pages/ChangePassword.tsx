@@ -81,7 +81,7 @@ export default function ChangePassword() {
                 </div>
                 <form onSubmit={handleSubmit} className="mx-auto md:mx-0  max-w-[400px] md:max-w-[400px] lg:max-w-[28.125rem] xl:max-w-[33.75rem] mt-12 flex flex-col gap-8">
                     <div className=" flex flex-col gap-3">
-                        <div className=" font-bold text-2xl leading-9 text-[#292C38] dark:text-white">Login with new Password</div>
+                        <div className=" font-bold text-2xl leading-9 text-[#292C38] dark:text-white">Change Your Password</div>
                         {/* <div className="text-sm font-medium text-textsecondary dark:text-textMain">Log In to your account</div> */}
                     </div>
                     <div className="flex flex-col gap-4">
@@ -130,7 +130,7 @@ export default function ChangePassword() {
                         </label>
                         {/* <span className=" text-third font-bold text-base"><Link to="/forgot-password">Forgot Password?</Link></span> */}
                     </div>
-                    <button type="submit" className="h-58  bg-third text-base leading-nomalText tracking-nomalText font-medium rounded-xl text-white ">Log In</button>
+                    <button type="submit" className="h-58  bg-third text-base leading-nomalText tracking-nomalText font-medium rounded-xl text-white ">Confirm</button>
                     {/* <div className="divider dark:before:bg-[#565C70] dark:after:bg-[#565C70] ">
                         <div className="divider-content text-textsecondary dark:text-[#565C70]  font-medium text-sm px-4">Or log in with</div>
                     </div>

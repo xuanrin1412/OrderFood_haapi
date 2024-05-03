@@ -43,6 +43,8 @@ export default function Login() {
                 return navigate("/")
             })
             .catch(err => {
+                console.log(err);
+
                 console.log(err.response.data.error);
                 toast.error(<p className=" capitalize">{err.response.data.error}</p>)
             })
