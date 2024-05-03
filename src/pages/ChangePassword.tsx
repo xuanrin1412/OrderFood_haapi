@@ -44,8 +44,6 @@ export default function ChangePassword() {
         setEmail(email || '');
     }, [location.search]);
 
-
-
     const handleSubmit = async (e: { preventDefault: () => void }) => {
         e.preventDefault()
         await axios.post("/api/reset-password", {

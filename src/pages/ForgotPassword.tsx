@@ -1,6 +1,6 @@
 import USFflag from "../assets/USFlag.png"
 import { IoChevronDown } from "react-icons/io5";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { setBlur, setFocus, } from "../features/FormAuth/formAuthSlice";
 import SideTheme from "../components/SideTheme";
 import { useState } from "react";
@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 export default function ForgotPassword() {
     const [email, setEmail] = useState<string>("")
     const [sentEmail, setSentEmail] = useState<boolean>(false)
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     const dispatch = useDispatch()
     const focusedInput: string = useSelector((state: RootState) => state.forms.focusedInput);
@@ -29,11 +29,13 @@ export default function ForgotPassword() {
                 console.log(res);
 
                 toast("Checking your email !!")
-                navigate("/change-password")
+                // navigate("/change-password")
                 setSentEmail(true)
             })
             .catch(err => {
+                console.log(err);
                 toast.error(<p className=" capitalize">{err.response.data.message}</p>)
+                // toast.error(<p className=" capitalize"></p>)
             })
     }
     return <div className="max-h-[1024px] flex ">
