@@ -26,6 +26,8 @@ export default function ForgotPassword() {
             email
         })
             .then((res) => {
+                console.log(res);
+
                 toast("Checking your email !!")
                 navigate("/change-password")
                 setSentEmail(true)

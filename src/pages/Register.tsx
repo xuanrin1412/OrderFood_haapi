@@ -57,6 +57,8 @@ export default function Register() {
                 password_confirmation
             },)
                 .then((res) => {
+                    console.log(res);
+
                     return navigate("/login")
                 })
                 .catch(err => {

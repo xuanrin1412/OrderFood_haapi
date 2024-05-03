@@ -22,6 +22,8 @@ export default function Content() {
     const [refreshTokenFood, setRefreshTokenFood] = useState<string | undefined>(
         Cookies.get("refresh_token")
     );
+    console.log(setRefreshTokenFood);
+
 
 
     const refreshAccessToken = async () => {

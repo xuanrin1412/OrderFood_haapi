@@ -55,6 +55,8 @@ export default function ChangePassword() {
             password_confirmation
         })
             .then((res) => {
+                console.log(res);
+
                 toast("Login Successful")
                 return navigate("/")
             })
