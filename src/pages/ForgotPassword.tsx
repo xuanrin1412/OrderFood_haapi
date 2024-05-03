@@ -38,7 +38,7 @@ export default function ForgotPassword() {
                 // toast.error(<p className=" capitalize"></p>)
             })
     }
-    return <div className="max-h-[1024px] flex ">
+    return <div className="max-h-[1024px] min-h-screen flex ">
         <div className="flex-1 relative bg-white dark:bg-[#292C38]">
             <div className="ml-[1.875rem] md:ml-[1.875rem] mt-10  xl:ml-[4.25rem] max-w-[193px] bg-secondary dark:bg-[#343744] flex items-center justify-center rounded-xl px-4 py-3">
                 <div className=" h-[1.125rem] w-6">
@@ -68,7 +68,7 @@ export default function ForgotPassword() {
                         <div className="text-sm font-medium text-textsecondary dark:text-textMain">Enter your email, we will send you the confirmation code</div>
                     </div>}
                     <div className="flex flex-col gap-4">
-                        {sentEmail ? <button className="h-58  bg-third text-base leading-nomalText tracking-nomalText font-medium rounded-xl text-white ">Login Again</button> : <span onFocus={() => { handleInputFocus("email") }}
+                        {sentEmail ? <Link to="/login" className=""><button className="h-58  w-full bg-third text-base leading-nomalText tracking-nomalText font-medium rounded-xl text-white ">Login Again</button></Link> : <span onFocus={() => { handleInputFocus("email") }}
                             onBlur={() => dispatch(setBlur())}
                             className={`${focusedInput === 'email' ? ' border-third' : 'border-borderColor dark:border-[#565C70]'} h-58 flex items-center pt-[1.188rem] pb-[1.125rem] rounded-xl border  `}>
                             <HiOutlineMail style={{ height: 24, width: 24, marginLeft: 16, marginRight: 12, color: "#96A0B5" }} />
