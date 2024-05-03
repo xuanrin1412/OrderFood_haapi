@@ -41,7 +41,6 @@ export default function Register() {
     const [checkPolicy, setCheckPolicy] = useState<boolean>(false)
     const handleCheckboxChange = () => {
         setChecked(!checked)
-        setCheckPolicy(!checkPolicy)
     }
 
 
