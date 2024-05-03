@@ -58,7 +58,7 @@ export default function ChangePassword() {
                 console.log(res);
 
                 toast("Login Successful")
-                return navigate("/")
+                return navigate("/login")
             })
             .catch(err => {
                 console.log(err.response.data.message);
